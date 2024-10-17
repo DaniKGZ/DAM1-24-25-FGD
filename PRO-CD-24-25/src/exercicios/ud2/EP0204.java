@@ -15,8 +15,10 @@ public class EP0204 {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Dime un numero y te dire si es un casi cero");
-        entrada = sc.nextDouble;
+        entrada = sc.nextDouble();
 
-        if 
+        if (entrada>(-1.0) && entrada<(1.0) && entrada!=0) {
+            System.out.println(entrada+" es un numero casi cero.");
+        } else {System.out.println(entrada+" no es un numero casi cero.");}
     }
 }
