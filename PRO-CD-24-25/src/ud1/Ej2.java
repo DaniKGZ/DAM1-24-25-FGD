@@ -1,4 +1,4 @@
-package ud1.fgdexamen;
+package ud1;
 
 
 /*
