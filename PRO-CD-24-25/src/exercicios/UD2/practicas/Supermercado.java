@@ -2,6 +2,7 @@ package exercicios.UD2.practicas;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+@SuppressWarnings("resource")
 
 public class Supermercado {
 
@@ -27,8 +28,17 @@ public class Supermercado {
             } while (isInOk == false);
 
             if (costProd > 0) {
-                System.out.println("Introduce la cantidad de productos.");
-                cantidad = sc.nextInt();
+                do {
+                    System.out.println("Introduce la cantidad de productos.");
+                    isInOk = true;
+                try {
+                    cantidad = sc.nextInt();
+                } catch (InputMismatchException e) {
+                    System.out.println("Introduce un numero, por favor");
+                    isInOk = false;
+                    sc.nextLine();
+                }
+                } while (isInOk == false);
             }
 
             if (cantidad > 0) {
@@ -47,12 +57,13 @@ public class Supermercado {
         Boolean efectivo, isInOk = true;
         Scanner sc = new Scanner(System.in);
 
-        do {
+        
             System.out.println("Cual será su metodo de pago?\n\nE/e - Efectivo.\n\nT/t - Tarjeta\n\n");
             for (int i = 1; i < 31; i++) {
                 System.out.print("-");
             }
             System.out.println("\n");
+        do {
             metodoPago = sc.nextLine();
             switch (metodoPago) {
                 case "e":
@@ -68,77 +79,129 @@ public class Supermercado {
                 default:
                     efectivo = true;
                     isInOk = false;
-                    System.out.println("Introduce una de las opciones validas!\n");
+                    System.out.println("Introduce una de las opciones validas! [E / T]\n");
                     break;
             }
-        } while (isInOk = false);
+        } while (isInOk == false);
         return efectivo;
     }
 
- 
-
     public static void efectivo(double input, double cost) {
 
-     
-        
         final int CINCO = 5, DIEZ = 10, VEINTE = 20, CINCUENTA = 50;
         double cambio;
-        int cincos=0, dieces=0, veintes=0, cincuentas=0, unos=0, cents=0, inEur, inCent;
+        int cincos = 0, dieces = 0, veintes = 0, cincuentas = 0, unos = 0, cents = 0, inEur, inCent;
         Boolean finCambio = false;
         cambio = input - cost;
-        System.out.println(cambio);
-        inEur = (int) Math.floor(cambio);
-        inCent = (int) (cambio - inEur)*100;
-        System.out.printf("%f %f %d %d %d %d %d %d ",input, cost, cincuentas, veintes, dieces, cincos, inEur, inCent);
-        while (finCambio=false) {
-            if (inEur>=CINCUENTA) {
-                cincuentas = inEur/CINCUENTA;
-                inEur = inEur-(cincuentas * CINCUENTA);
-            } else if(inEur>=VEINTE) {
-                veintes=inEur/VEINTE;
-                inEur=inEur-(veintes * VEINTE);
-            } else if(inEur>=DIEZ) {
-                dieces= inEur/DIEZ;
-                inEur = inEur-(dieces*DIEZ);
-            } else if (inEur>=CINCO) {
-                cincos = inEur/CINCO;
-                inEur = inEur - (cincos*CINCO);
-            } else {unos=inEur;
-            finCambio=true;}            
-        }
+        inEur = (int) cambio;
+        inCent = (int) ((cambio - inEur + 0.00001) * 100);
 
+        do {
+            if (inEur >= CINCUENTA) {
+                cincuentas = inEur / CINCUENTA;
+                inEur = inEur - (cincuentas * CINCUENTA);
+            } else if (inEur >= VEINTE) {
+                veintes = inEur / VEINTE;
+                inEur = inEur - (veintes * VEINTE);
+            } else if (inEur >= DIEZ) {
+                dieces = inEur / DIEZ;
+                inEur = inEur - (dieces * DIEZ);
+            } else if (inEur >= CINCO) {
+                cincos = inEur / CINCO;
+                inEur = inEur - (cincos * CINCO);
+            } else {
+                unos = inEur;
+                finCambio = true;
+            }
+        } while (finCambio == false);
 
         cents = inCent;
-        System.out.printf("%d %d %d %d %d %d", cincuentas, veintes, dieces, cincos, unos, cents);
-        System.out.printf("Tu cambio es de: %d %d %d %d %d %d ", cincuentas, veintes, dieces, cincos, unos, cents);
-        if (cincuentas > 0) {System.out.println("BILLETES DE 50: "+ cincuentas);}
-        if (veintes > 0) {System.out.println("BILLETES DE 50: "+ veintes);}
-        if ( dieces> 0) {System.out.println("BILLETES DE 50: "+ dieces);}
-        if (cincos > 0) {System.out.println("BILLETES DE 50: "+ cincos);}
-        if (unos > 0) {System.out.println("BILLETES DE 50: "+ unos);}
-        if (cents > 0) {System.out.println("BILLETES DE 50: "+ cents);}
-        
+        System.out.println("Tu cambio es de:");
+        if (cincuentas > 0) {
+            System.out.println("BILLETES DE 50: " + cincuentas);
+        }
+        if (veintes > 0) {
+            System.out.println("BILLETES DE 20: " + veintes);
+        }
+        if (dieces > 0) {
+            System.out.println("BILLETES DE 10: " + dieces);
+        }
+        if (cincos > 0) {
+            System.out.println("BILLETES DE 5: " + cincos);
+        }
+        if (unos > 0) {
+            System.out.println("MONEDAS DE EURO: " + unos);
+        }
+        if (cents > 0) {
+            System.out.println("MONEDAS DE CENTIMO: " + cents);
+        }
     }
-    
+
+    public static double tryCatchDouble(double input) {
+        Scanner sc = new Scanner(System.in);
+        Boolean isInOk;
+        do {
+            isInOk = true;
+            try {
+                input = sc.nextDouble();
+            } catch (InputMismatchException e) {
+                System.out.println("Valor no valido! Vuelve a intentarlo.\n");
+                isInOk=false;
+                sc.nextLine();
+            }
+        } while (isInOk==false);
+        System.out.println(input);
+        return input;
+    }
+
+
    public static void main(String[] args) {
+
     Scanner sc = new Scanner(System.in);
-    double costeTotal, pago;
-    Boolean error= false;
-        System.out.println("Bienvenido, cliente! procederemos a realizar el cobro.");
-        costeTotal = productos();
-        System.out.println("El coste total es " + costeTotal);
-        if (eleccionMetodo()==true) {
-            System.out.println("Introduce la cantidad a pagar.  ||  Precio: "+costeTotal+" €.");
-            do {
-                pago = sc.nextDouble();
-                if (pago>costeTotal) {
-                    error=false;
-                    System.out.println(error);
-                } else {System.out.println("El pago debe ser superior al coste.");
-                    error=true;}
-            } while (error==true);
-            efectivo(pago ,costeTotal);
-        } else {System.out.println("Gracias por venir!");}
-   }
+    String nuevoCobro;
+    double costeTotal, pago=0;
+    Boolean error= false, seguir=false, errorFin=false;
+        do {
+                System.out.println("Bienvenido, cliente! procederemos a realizar el cobro.");
+            costeTotal = productos();
+            System.out.println("El coste total es " + costeTotal);
+            if (eleccionMetodo()==true) {
+                System.out.println("Introduce la cantidad a pagar.  ||  Precio: "+costeTotal+" €.");
+                do {    
+                    pago = tryCatchDouble(pago);
+                    System.out.println(pago);
+                    if (pago>costeTotal) {
+                        error=false;
+
+                    } else {System.out.println("El pago debe ser superior al coste.");
+                        error=true;}
+                } while (error==true);
+                efectivo(pago ,costeTotal);
+            } else {System.out.println("Gracias por venir!");}
+            System.out.println("Quieres realizar otro cobro? [S / N]");
+                do {
+                    errorFin=false;
+                    nuevoCobro = sc.nextLine();
+                    switch (nuevoCobro) {
+                        case "S":
+                        case "s":
+                            seguir=true;
+                            System.out.println("\n\n");
+                            break;
+                        case "n":
+                        case "N":
+                            seguir=false;
+                            break;
+                        default:
+                            System.out.println("Introduce una S o una N por favor.\n\n");
+                            errorFin=true;
+                            break;
+                        }
+                    } while (errorFin==true);
+            } while (seguir==true); 
+        System.out.println("\nGracias por usar nuestros servicios.");
+
+    }
 
 }
+    
